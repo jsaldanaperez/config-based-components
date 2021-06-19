@@ -18,13 +18,22 @@ export class UserService {
         id: 1,
         userName: 'José',
         email: 'j.saldanaperez@icloud.com',
-        type: UserType.Admin
+        type: UserType.Admin,
+        inActive: false
       },
       { 
         id: 2,
         userName: 'Manfred',
         email: 'johndoe@manfred.com',
-        type: UserType.User
+        type: UserType.User,
+        inActive: false
+      },
+      {
+        id: 3,
+        userName: 'Dariusz',
+        email: 'johndo@dariusz.com',
+        type: UserType.User,
+        inActive: true
       }
     ];
   }

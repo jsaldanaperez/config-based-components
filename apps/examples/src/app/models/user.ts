@@ -3,6 +3,7 @@ export class User {
     userName: string;
     email: string;
     type: UserType;
+    inActive: boolean;
 }
 
 export enum UserType{

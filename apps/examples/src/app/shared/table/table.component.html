@@ -1,5 +1,5 @@
 <h3 *ngIf="loading">Loading...</h3>
-<table *ngIf="!loading">
+<table *ngIf="!loading" class="table table-striped">
   <thead>
     <th *ngFor="let col of cols">
       {{col.displayName ?? col.name}}
