@@ -5,7 +5,7 @@
       "projectType": "application",
       "root": "apps/examples",
       "sourceRoot": "apps/examples/src",
-      "prefix": "config-based-components",
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
