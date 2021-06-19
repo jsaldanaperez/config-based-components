@@ -2,7 +2,7 @@
 
 ## Plug & Play
 
-This project is a demo for configuration based table component.
+This project is a demo for configuration based table component. Designed with the intention of having plug&play functionality.
 
 ### TableComponent structure
 
