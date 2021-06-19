@@ -4,6 +4,8 @@ import { TableComponent } from './table.component';
 import { TableColComponent } from './table-col/table-col.component';
 import { TableFilterComponent } from './table-filter/table-filter.component';
 import { TableFilterItemComponent } from './table-filter-item/table-filter-item.component';
+import { FormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -15,7 +17,9 @@ import { TableFilterItemComponent } from './table-filter-item/table-filter-item.
     TableFilterItemComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
+    NgbModule
   ],
   exports: [
     TableComponent,

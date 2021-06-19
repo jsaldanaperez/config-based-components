@@ -1,1 +1,47 @@
-<p>table-filter works!</p>
+<form #filterForm="ngForm" (change)="onChange()">
+  <div class="row">
+    <div
+      [ngClass]="{
+        'col-12': filterItems.length === 0,
+        'col-7': filterItems.length > 0
+      }"
+    >
+      <input
+        type="text"
+        name="search"
+        autocomplete="off"
+        class="form-control"
+        (keyup)="onChange()"
+        [(ngModel)]="criteria.searchTerm"
+      />
+    </div>
+    <div *ngIf="filterItems.length > 0" class="col-3">
+      <div ngbDropdown>
+        <button
+          class="btn btn-outline-primary"
+          style="width: 100%"
+          ngbDropdownToggle
+          (click)="$event.stopPropagation()"
+        >
+          Filter
+        </button>
+        <div ngbDropdownMenu>
+          <div ngbDropdownItem *ngFor="let filterItem of filterItems">
+            <ng-container
+              *ngTemplateOutlet="
+                filterItem.template;
+                context: { $implicit: criteria }
+              "
+            ></ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-2">
+      <button class="btn btn-outline-secondary" (click)="resetFilter()">
+        Reset
+      </button>
+    </div>
+  </div>
+</form>

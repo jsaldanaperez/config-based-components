@@ -27,14 +27,14 @@ export class InvoiceService {
     const searchTerm = request.searchTerm;
     let filteredInvoices = this.invoices;
     if(searchTerm){
-      filteredInvoices = filteredInvoices.filter(x => x.invoiceNumber.toLocaleLowerCase().indexOf(searchTerm.toLocaleLowerCase()) > 0)
+      filteredInvoices = filteredInvoices.filter(x => x.invoiceNumber.toLocaleLowerCase().indexOf(searchTerm.toLocaleLowerCase()) !== -1)
     }
 
-    if(request.paymentState){
-      filteredInvoices = filteredInvoices.filter(x => x.paymentState === request.paymentState);
+    if(request.paymentStates?.length){
+      filteredInvoices = filteredInvoices.filter(x => request.paymentStates.indexOf(x.paymentState) !== -1);
     }
 
-    return of(filteredInvoices).pipe(delay(1500))
+    return of(filteredInvoices).pipe(delay(800))
   }
 
   private randomEnum<T>(anEnum: T): T[keyof T] {

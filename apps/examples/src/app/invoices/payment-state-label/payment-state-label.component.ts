@@ -8,5 +8,6 @@ import { PaymentState } from '../../models/invoice';
 })
 export class PaymentStateLabelComponent{
   @Input() value: PaymentState;
+  @Input() asBadge: boolean;
   paymentStates = PaymentState;
 }
