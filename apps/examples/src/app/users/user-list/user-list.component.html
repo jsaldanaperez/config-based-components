@@ -1,0 +1,11 @@
+<h3>Users</h3>
+
+<app-table [config]="config">
+  <app-table-col name="userName" displayName="User"></app-table-col>
+  <app-table-col name="email" displayName="E-mail"></app-table-col>
+  <app-table-col name="type" displayName="Type">
+    <ng-template let-value>
+      <app-user-type-label [value]="value"></app-user-type-label>
+    </ng-template>
+  </app-table-col>
+</app-table>
