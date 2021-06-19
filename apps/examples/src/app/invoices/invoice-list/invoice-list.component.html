@@ -1,0 +1,13 @@
+<h4>Invoices</h4>
+<br />
+<app-table [config]="config">
+  <app-table-col name="invoiceNumber" displayName="Number"></app-table-col>
+  <app-table-col name="amount" displayName="Amount">
+    <ng-template let-value> &euro; {{ value | number: '1.2-2' }} </ng-template>
+  </app-table-col>
+  <app-table-col name="paymentState" displayName="State">
+    <ng-template let-value>
+      <app-payment-state-label [value]="value"></app-payment-state-label>
+    </ng-template>
+  </app-table-col>
+</app-table>

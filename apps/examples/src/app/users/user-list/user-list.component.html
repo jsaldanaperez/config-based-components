@@ -1,11 +1,16 @@
-<h3>Users</h3>
-
+<h4>Users</h4>
+<br />
 <app-table [config]="config">
   <app-table-col name="userName" displayName="User"></app-table-col>
   <app-table-col name="email" displayName="E-mail"></app-table-col>
   <app-table-col name="type" displayName="Type">
     <ng-template let-value>
       <app-user-type-label [value]="value"></app-user-type-label>
+    </ng-template>
+  </app-table-col>
+  <app-table-col name="inActive" displayName="Active">
+    <ng-template let-value>
+      {{ value ? '&#10005;' : '&#10003;' }}
     </ng-template>
   </app-table-col>
 </app-table>

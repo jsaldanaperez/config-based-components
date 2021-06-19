@@ -1,0 +1,9 @@
+<ng-container [ngSwitch]="value">
+  <span *ngSwitchCase="paymentStates.Pending" class="badge bg-info"
+    >Pending</span
+  >
+  <span *ngSwitchCase="paymentStates.Payed" class="badge bg-success"
+    >Payed</span
+  >
+  <span *ngSwitchCase="paymentStates.Late" class="badge bg-danger">Late</span>
+</ng-container>
