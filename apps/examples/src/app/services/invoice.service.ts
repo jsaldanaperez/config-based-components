@@ -9,17 +9,19 @@ import { SearchInvoicesRequest } from '../models/search-invoices-request';
 })
 export class InvoiceService {
 
-  invoices: Invoice[] = [];
+  invoices: Invoice[];
 
   constructor(){
-    for(let i = 1; i < 10; i++){
-      this.invoices.push({
-        id: i,
-        amount: i * 150.3,
-        paymentState: this.randomEnum(PaymentState),
-        invoiceNumber: `ES0000${i}`
-      })
-    }
+    this.invoices = [ 
+      { id: 1, amount: 150.3, paymentState: PaymentState.Payed, invoiceNumber: 'ES00001' }, 
+      { id: 2, amount: 300.6, paymentState: PaymentState.Late, invoiceNumber: 'ES00002' }, 
+      { id: 3, amount: 450.90000000000003, paymentState: PaymentState.Pending, invoiceNumber: 'ES00003' }, 
+      { id: 4, amount: 601.2, paymentState: PaymentState.Payed, invoiceNumber: 'ES00004' }, 
+      { id: 5, amount: 751.5, paymentState: PaymentState.Payed, invoiceNumber: 'ES00005' }, 
+      { id: 6, amount: 901.8000000000001, paymentState: PaymentState.Late, invoiceNumber: 'ES00006' }, 
+      { id: 7, amount: 1052.1000000000001, paymentState: PaymentState.Payed, invoiceNumber: 'ES00007' }, 
+      { id: 8, amount: 1202.4, paymentState: PaymentState.Pending, invoiceNumber: 'ES00008' }, 
+      { id: 9, amount: 1352.7, paymentState: PaymentState.Late, invoiceNumber: 'ES00009' } ]
   }
 
   search(request: SearchInvoicesRequest): Observable<Invoice[]>{

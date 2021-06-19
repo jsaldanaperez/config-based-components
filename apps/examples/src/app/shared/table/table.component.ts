@@ -1,6 +1,8 @@
 import { Component, ContentChildren, Input, OnInit, QueryList } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { DeepCloneService } from '../deep-clone.service';
 import { TableColComponent } from './table-col/table-col.component';
 import { TableConfig } from './table-config';
 import { TableFilterItemComponent } from './table-filter-item/table-filter-item.component';
@@ -15,25 +17,57 @@ export class TableComponent implements OnInit {
   @ContentChildren(TableColComponent) cols: QueryList<TableColComponent>;
   @ContentChildren(TableFilterItemComponent) filterItems: QueryList<TableFilterItemComponent>;
   subscription: Subscription;
+  originalCriteriaValue: any;
   criteria: any;
   records: any[];
   loading: boolean;
-  constructor() { }
+
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private deepCloneService: DeepCloneService) { }
 
   ngOnInit(): void {
-    this.criteria = this.config.criteria;
-    this.onSearch();
+    this.originalCriteriaValue = this.deepCloneService.clone(this.config.criteria);
+    const criteria = this.activatedRoute.snapshot.queryParamMap.get('criteria');
+    if(criteria){
+      this.criteria = JSON.parse(atob(criteria));
+    }else{
+      this.criteria = this.deepCloneService.clone(this.config.criteria);
+    }
+    this.search();
   }
 
-  onSearch(){
+  search(){
     this.loading = true;
     if(this.subscription){
       this.subscription.unsubscribe();
     }
-
     this.subscription = this.config.search(this.criteria)
     .pipe(finalize(() => this.loading = false))
     .subscribe((result) => this.records = result)
   }
 
+  onCriteriaChange(){
+      this.changeUrl(btoa(JSON.stringify(this.criteria)));
+      this.search();
+  }
+
+  resetFilter = () =>{
+    Object.keys(this.criteria).forEach(key => {
+      this.criteria[key] = this.deepCloneService.clone(this.originalCriteriaValue[key]);
+    })
+    this.changeUrl(undefined)
+    this.search();
+  }
+
+  changeUrl(criteria?: string){
+    this.router.navigate(
+      [], 
+      {
+        relativeTo: this.activatedRoute,
+        queryParams: { criteria: criteria }, 
+        queryParamsHandling: 'merge',
+      });
+  }
 }
