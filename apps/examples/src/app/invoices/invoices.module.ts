@@ -5,6 +5,7 @@ import { InvoicesRoutingModule } from './invoices-routing.module';
 import { InvoiceListComponent } from './invoice-list/invoice-list.component';
 import { TableModule } from '../shared/table/table.module';
 import { PaymentStateLabelComponent } from './payment-state-label/payment-state-label.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { PaymentStateLabelComponent } from './payment-state-label/payment-state-
   imports: [
     CommonModule,
     InvoicesRoutingModule,
-    TableModule
+    TableModule,
+    FormsModule
   ]
 })
 export class InvoicesModule { }

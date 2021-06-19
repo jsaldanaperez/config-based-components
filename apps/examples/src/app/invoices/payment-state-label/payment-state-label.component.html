@@ -1,9 +1,17 @@
 <ng-container [ngSwitch]="value">
-  <span *ngSwitchCase="paymentStates.Pending" class="badge bg-info"
+  <span
+    *ngSwitchCase="paymentStates.Pending"
+    [ngClass]="{ 'badge bg-info': asBadge }"
     >Pending</span
   >
-  <span *ngSwitchCase="paymentStates.Payed" class="badge bg-success"
+  <span
+    *ngSwitchCase="paymentStates.Payed"
+    [ngClass]="{ 'badge bg-success': asBadge }"
     >Payed</span
   >
-  <span *ngSwitchCase="paymentStates.Late" class="badge bg-danger">Late</span>
+  <span
+    *ngSwitchCase="paymentStates.Late"
+    [ngClass]="{ 'badge bg-danger': asBadge }"
+    >Late</span
+  >
 </ng-container>

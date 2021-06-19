@@ -1,13 +1,38 @@
 <h4>Invoices</h4>
 <br />
 <app-table [config]="config">
+  <app-table-filter-item>
+    <ng-template let-criteria>
+      <strong>Payment state</strong>
+
+      <div class="form-check" *ngFor="let paymentState of paymentStates">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          name="paymentPending"
+          [checked]="criteria.paymentStates.indexOf(paymentState) !== -1"
+          (change)="onChange(criteria, paymentState, $event)"
+          id="activeUsers"
+        />
+        <label class="form-check-label" for="activeUsers">
+          <app-payment-state-label
+            [value]="paymentState"
+          ></app-payment-state-label>
+        </label>
+      </div>
+    </ng-template>
+  </app-table-filter-item>
+
   <app-table-col name="invoiceNumber" displayName="Number"></app-table-col>
   <app-table-col name="amount" displayName="Amount">
     <ng-template let-value> &euro; {{ value | number: '1.2-2' }} </ng-template>
   </app-table-col>
   <app-table-col name="paymentState" displayName="State">
     <ng-template let-value>
-      <app-payment-state-label [value]="value"></app-payment-state-label>
+      <app-payment-state-label
+        [value]="value"
+        [asBadge]="true"
+      ></app-payment-state-label>
     </ng-template>
   </app-table-col>
 </app-table>

@@ -24,14 +24,14 @@ export class UserService {
       { 
         id: 2,
         userName: 'Manfred',
-        email: 'johndoe@manfred.com',
+        email: 'Manfred@manfred.com',
         type: UserType.User,
         inActive: false
       },
       {
         id: 3,
         userName: 'Dariusz',
-        email: 'johndo@dariusz.com',
+        email: 'Dariusz@dariusz.com',
         type: UserType.User,
         inActive: true
       }
@@ -42,12 +42,17 @@ export class UserService {
 
     const searchTerm = request.searchTerm;
     let filteredUsers = this.users;
-    if(searchTerm){
-      filteredUsers = filteredUsers.filter(x => x.email.indexOf(searchTerm.toLocaleLowerCase()) > 0 || 
-      x.userName.indexOf(searchTerm.toLocaleLowerCase()) > 0)
+    if(searchTerm?.length){
+      filteredUsers = filteredUsers.filter(x => 
+        x.email.toLocaleLowerCase().indexOf(searchTerm.toLocaleLowerCase()) !== -1 || 
+        x.userName.toLocaleLowerCase().indexOf(searchTerm.toLocaleLowerCase()) !== -1)
     }
 
-    return of(filteredUsers).pipe(delay(1500))
+    if(request.onlyActive){
+      filteredUsers = filteredUsers.filter(x => !x.inActive);
+    }
+
+    return of(filteredUsers).pipe(delay(500))
   }
 
 }
