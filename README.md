@@ -15,7 +15,8 @@ This project is a demo for configuration based table component. Designed with th
 - Loading
 - Filtering
 - Custom filter items
-- Bookmarkable search
+- Bookmarkable search (recover state after reload)
+- Reset filter to initial state
 - Customize how to display data
 
 ### Missing functionality
