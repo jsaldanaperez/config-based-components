@@ -23,6 +23,36 @@
     </ng-template>
   </app-table-filter-item>
 
+  <app-table-filter-item>
+    <ng-template let-criteria>
+      <div class="form-group">
+        <label for="minAmount">Min. Amount</label>
+        <input
+          type="number"
+          class="form-control"
+          id="minAmount"
+          name="minAmount"
+          [(ngModel)]="criteria.minAmount"
+        />
+      </div>
+    </ng-template>
+  </app-table-filter-item>
+
+  <app-table-filter-item>
+    <ng-template let-criteria>
+      <div class="form-group">
+        <label for="maxAmount">Max. Amount</label>
+        <input
+          type="number"
+          class="form-control"
+          id="maxAmount"
+          name="maxAmount"
+          [(ngModel)]="criteria.maxAmount"
+        />
+      </div>
+    </ng-template>
+  </app-table-filter-item>
+
   <app-table-col name="invoiceNumber" displayName="Number"></app-table-col>
   <app-table-col name="amount" displayName="Amount">
     <ng-template let-value> &euro; {{ value | number: '1.2-2' }} </ng-template>

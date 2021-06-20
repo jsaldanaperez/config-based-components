@@ -1,6 +1,7 @@
 <app-table-filter
   [filterItems]="filterItems"
   [(criteria)]="criteria"
+  [originalCriteria]="originalCriteriaValue"
   (criteriaChange)="onCriteriaChange()"
   (reset)="resetFilter()"
 ></app-table-filter>

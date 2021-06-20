@@ -16,22 +16,22 @@ export class UserService {
     this.users = [
       { 
         id: 1,
-        userName: 'José',
-        email: 'j.saldanaperez@icloud.com',
+        userName: 'John',
+        email: 'email1@icloud.com',
         type: UserType.Admin,
         inActive: false
       },
       { 
         id: 2,
-        userName: 'Manfred',
-        email: 'Manfred@manfred.com',
+        userName: 'Jane',
+        email: 'email2@gmail.com',
         type: UserType.User,
         inActive: false
       },
       {
         id: 3,
-        userName: 'Dariusz',
-        email: 'Dariusz@dariusz.com',
+        userName: 'Unknown',
+        email: 'email3@hotmail.com',
         type: UserType.User,
         inActive: true
       }
