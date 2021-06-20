@@ -6,12 +6,14 @@ import { InvoiceListComponent } from './invoice-list/invoice-list.component';
 import { TableModule } from '../shared/table/table.module';
 import { PaymentStateLabelComponent } from './payment-state-label/payment-state-label.component';
 import { FormsModule } from '@angular/forms';
+import { InvoiceDetailsComponent } from './invoice-details/invoice-details.component';
 
 
 @NgModule({
   declarations: [
     InvoiceListComponent,
-    PaymentStateLabelComponent
+    PaymentStateLabelComponent,
+    InvoiceDetailsComponent
   ],
   imports: [
     CommonModule,
