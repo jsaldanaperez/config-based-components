@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { Invoice, PaymentState } from '../../models/invoice';
 import { SearchInvoicesRequest } from '../../models/search-invoices-request';
 import { InvoiceService } from '../../services/invoice.service';

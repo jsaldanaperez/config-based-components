@@ -21,12 +21,16 @@
           class="btn btn-outline-primary"
           style="width: 100%"
           ngbDropdownToggle
-          (click)="$event.stopPropagation()"
         >
+          <span *ngIf="usedFilterItems">({{ usedFilterItems }})&nbsp;</span>
           Filter
         </button>
         <div ngbDropdownMenu>
-          <div ngbDropdownItem *ngFor="let filterItem of filterItems">
+          <div
+            ngbDropdownItem
+            *ngFor="let filterItem of filterItems"
+            (mouseup)="$event.stopPropagation()"
+          >
             <ng-container
               *ngTemplateOutlet="
                 filterItem.template;

@@ -41,6 +41,14 @@ export class InvoiceService {
       filteredInvoices = filteredInvoices.filter(x => request.paymentStates.indexOf(x.paymentState) !== -1);
     }
 
+    if(request.minAmount){
+      filteredInvoices = filteredInvoices.filter(x => x.amount >= request.minAmount);
+    }
+
+    if(request.maxAmount){
+      filteredInvoices = filteredInvoices.filter(x => x.amount <= request.maxAmount);
+    }
+
     return of(filteredInvoices).pipe(delay(800))
   }
 
