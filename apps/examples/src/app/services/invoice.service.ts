@@ -24,6 +24,11 @@ export class InvoiceService {
       { id: 9, amount: 1352.7, paymentState: PaymentState.Late, invoiceNumber: 'ES00009' } ]
   }
 
+  getById(id: number){
+    const index = this.findIndex(id);
+    return of(this.invoices[index]);
+  }
+
   search(request: SearchInvoicesRequest): Observable<Invoice[]>{
 
     const searchTerm = request.searchTerm;
@@ -39,12 +44,5 @@ export class InvoiceService {
     return of(filteredInvoices).pipe(delay(800))
   }
 
-  private randomEnum<T>(anEnum: T): T[keyof T] {
-    const enumValues = Object.keys(anEnum)
-      .map(n => Number.parseInt(n))
-      .filter(n => !Number.isNaN(n)) as unknown as T[keyof T][]
-    const randomIndex = Math.floor(Math.random() * enumValues.length)
-    const randomEnumValue = enumValues[randomIndex]
-    return randomEnumValue;
-  }
+  private findIndex = (id: number) => this.invoices.findIndex(x => x.id == id);
 }

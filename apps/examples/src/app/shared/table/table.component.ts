@@ -21,6 +21,7 @@ export class TableComponent implements OnInit {
   criteria: any;
   records: any[];
   loading: boolean;
+  details: boolean;
 
   constructor(
     private router: Router,
@@ -29,6 +30,7 @@ export class TableComponent implements OnInit {
 
   ngOnInit(): void {
     this.originalCriteriaValue = this.deepCloneService.clone(this.config.criteria);
+    this.details = this.config.details != null;
     const criteria = this.activatedRoute.snapshot.queryParamMap.get('criteria');
     if(criteria){
       this.criteria = JSON.parse(atob(criteria));
@@ -69,5 +71,11 @@ export class TableComponent implements OnInit {
         queryParams: { criteria: criteria }, 
         queryParamsHandling: 'merge',
       });
+  }
+
+  onDetails(record: any){
+    if(this.config.details){
+      this.config.details(record);
+    }
   }
 }

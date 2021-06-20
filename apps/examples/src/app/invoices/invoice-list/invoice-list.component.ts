@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Invoice, PaymentState } from '../../models/invoice';
 import { SearchInvoicesRequest } from '../../models/search-invoices-request';
@@ -14,12 +15,16 @@ export class InvoiceListComponent implements OnInit {
   config: TableConfig<SearchInvoicesRequest, Invoice>;
   paymentStates = [PaymentState.Pending, PaymentState.Payed, PaymentState.Late];
 
-  constructor(private invoiceService: InvoiceService) { }
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private invoiceService: InvoiceService) { }
 
   ngOnInit(): void {
     this.config = new TableConfig<SearchInvoicesRequest, Invoice>({
       criteria: new SearchInvoicesRequest,
-      search: (criteria) => this.invoiceService.search(criteria)
+      search: (criteria) => this.invoiceService.search(criteria),
+      details: (invoice) => this.router.navigate([invoice.id, { returnUrl: this.router.url}], {relativeTo: this.activatedRoute })
     })
   }
 

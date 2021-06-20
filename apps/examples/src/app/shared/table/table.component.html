@@ -14,6 +14,7 @@
     <th *ngFor="let col of cols">
       {{col.displayName ?? col.name}}
     </th>
+    <th *ngIf="details">Actions</th>
   </thead>
   <tbody>
     <tr *ngFor="let record of records">
@@ -30,6 +31,14 @@
         <ng-container *ngIf="!col.template">
           {{ record[col.name] }}
         </ng-container>
+      </td>
+      <td *ngIf="details">
+        <button
+          (click)="onDetails(record)"
+          class="btn btn-outline-secondary btn-sm"
+        >
+          Details
+        </button>
       </td>
     </tr>
   </tbody>
