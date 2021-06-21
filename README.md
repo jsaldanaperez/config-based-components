@@ -18,14 +18,15 @@ This project is a demo for configuration based table component. Designed with th
 - Bookmarkable search (recover state after reload)
 - Reset filter to initial state
 - Customize how to display data
+- Navigation to details page
+- Display count of used filters
 
 ### Missing functionality
 
 - Pagination
 - OrderBy per col
 - Dynamic context menu per record
-- Navigation to details page
 - Updating state per record
 - Highlight record depending on state
 - Apply mobile ng-template per record depending on screen size
-- Display count of used filters
+
