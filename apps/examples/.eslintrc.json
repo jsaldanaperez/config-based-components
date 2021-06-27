@@ -13,7 +13,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "configBasedComponents",
+            "prefix": "app",
             "style": "camelCase"
           }
         ],
@@ -21,7 +21,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "config-based-components",
+            "prefix": "app",
             "style": "kebab-case"
           }
         ]

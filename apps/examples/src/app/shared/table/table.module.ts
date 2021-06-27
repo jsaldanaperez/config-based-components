@@ -5,7 +5,6 @@ import { TableColComponent } from './table-col/table-col.component';
 import { TableFilterComponent } from './table-filter/table-filter.component';
 import { TableFilterItemComponent } from './table-filter-item/table-filter-item.component';
 import { FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -18,8 +17,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   ],
   imports: [
     CommonModule,
-    FormsModule,
-    NgbModule
+    FormsModule
   ],
   exports: [
     TableComponent,

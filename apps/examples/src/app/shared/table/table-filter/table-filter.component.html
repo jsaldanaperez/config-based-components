@@ -1,3 +1,5 @@
+<!-- Example split danger button -->
+
 <form #filterForm="ngForm" (change)="onChange()">
   <div class="row">
     <div
@@ -16,29 +18,28 @@
       />
     </div>
     <div *ngIf="filterItems.length > 0" class="col-3">
-      <div ngbDropdown>
+      <div class="btn-group">
         <button
-          class="btn btn-outline-primary"
-          style="width: 100%"
-          ngbDropdownToggle
+          type="button"
+          class="btn btn-outline-primary dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
         >
           <span *ngIf="usedFilterItems">({{ usedFilterItems }})&nbsp;</span>
           Filter
         </button>
-        <div ngbDropdownMenu>
-          <div
-            ngbDropdownItem
-            *ngFor="let filterItem of filterItems"
-            (mouseup)="$event.stopPropagation()"
-          >
-            <ng-container
-              *ngTemplateOutlet="
-                filterItem.template;
-                context: { $implicit: criteria }
-              "
-            ></ng-container>
-          </div>
-        </div>
+        <ul class="dropdown-menu">
+          <li *ngFor="let filterItem of filterItems">
+            <div class="dropdown-item" (mouseup)="$event.stopPropagation()">
+              <ng-container
+                *ngTemplateOutlet="
+                  filterItem.template;
+                  context: { $implicit: criteria }
+                "
+              ></ng-container>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
 

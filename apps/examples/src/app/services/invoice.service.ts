@@ -25,8 +25,8 @@ export class InvoiceService {
   }
 
   getById(id: number){
-    const index = this.findIndex(id);
-    return of(this.invoices[index]);
+    const index = this.findIndex(id); 
+    return of(this.invoices[index]).pipe(delay(500));
   }
 
   search(request: SearchInvoicesRequest): Observable<Invoice[]>{
