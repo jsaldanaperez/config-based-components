@@ -7,6 +7,7 @@ import { TableModule } from '../shared/table/table.module';
 import { PaymentStateLabelComponent } from './payment-state-label/payment-state-label.component';
 import { FormsModule } from '@angular/forms';
 import { InvoiceDetailsComponent } from './invoice-details/invoice-details.component';
+import { FormModule } from '../shared/form/form.module';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { InvoiceDetailsComponent } from './invoice-details/invoice-details.compo
     CommonModule,
     InvoicesRoutingModule,
     TableModule,
-    FormsModule
+    FormsModule,
+    FormModule
   ]
 })
 export class InvoicesModule { }

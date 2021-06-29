@@ -1,10 +1,34 @@
-<div class="row">
-  <div class="col">
-    <a (click)="onBack()" class="float-right">Go back</a>
-  </div>
-</div>
-<hr />
-<h4>Invoice details</h4>
-<div style="background-color: rgba(0, 0, 0, 0.1)">
-  {{ invoice | json }}
-</div>
+<app-form [config]="config" title="Invoice details">
+  <ng-container *ngIf="invoice">
+    <div class="mb-3">
+      <label for="invoiceNumber" class="form-label">Invoice Number</label>
+      <input
+        type="text"
+        id="invoiceNumber"
+        name="invoiceNumber"
+        class="form-control"
+        [(ngModel)]="invoice.invoiceNumber"
+        [required]="true"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="amount" class="form-label">Amount</label>
+      <input
+        type="text"
+        id="amount"
+        name="amount"
+        class="form-control"
+        [(ngModel)]="invoice.amount"
+        [required]="true"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="amount" class="form-label">State</label>
+      <select [(ngModel)]="invoice.paymentState" class="form-select">
+        <option [ngValue]="paymentStates.Pending">Pending</option>
+        <option [ngValue]="paymentStates.Payed">Payed</option>
+        <option [ngValue]="paymentStates.Late">Late</option>
+      </select>
+    </div>
+  </ng-container>
+</app-form>

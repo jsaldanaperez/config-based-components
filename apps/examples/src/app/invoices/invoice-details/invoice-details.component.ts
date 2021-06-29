@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Invoice } from '../../models/invoice';
+import { Invoice, PaymentState } from '../../models/invoice';
 import { InvoiceService } from '../../services/invoice.service';
+import { FormConfig } from '../../shared/form/form-config';
 
 @Component({
   selector: 'app-invoice-details',
@@ -10,17 +10,20 @@ import { InvoiceService } from '../../services/invoice.service';
 })
 export class InvoiceDetailsComponent implements OnInit {
   invoice: Invoice;
-  returnUrl: string | null;
-  onBack = () => this.router.navigateByUrl(this.returnUrl ?? 'invoices');
+  config: FormConfig<Invoice>;
+  paymentStates = PaymentState;
 
   constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
     private invoiceService: InvoiceService) { }
 
   ngOnInit(): void {
-    const id = this.activatedRoute.snapshot.paramMap.get('id') as unknown as number;
-    this.returnUrl = this.activatedRoute.snapshot.paramMap.get('returnUrl');
-    this.invoiceService.getById(id).subscribe(invoice => this.invoice = invoice);
+    this.config = FormConfig.create<Invoice>({
+      value: (value) => this.invoice = value,
+      new: () => new Invoice(),
+      load: (id: number) => this.invoiceService.getById(id),
+      create: (invoice) => this.invoiceService.create(invoice),
+      update: (invoice) => this.invoiceService.update(invoice),
+      validate: (invoice) => invoice.invoiceNumber !== "RANDOM"
+    });
   }
 }

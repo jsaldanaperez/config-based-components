@@ -52,5 +52,18 @@ export class InvoiceService {
     return of(filteredInvoices).pipe(delay(800))
   }
 
+  update(invoice: Invoice): Observable<Invoice>{
+    const index = this.findIndex(invoice.id);
+    this.invoices[index] = invoice;
+    return of(this.invoices[index]).pipe(delay(1000));;
+  }
+
+  create(invoice: Invoice): Observable<Invoice>{
+    const invoiceWithHighestId = this.invoices.reduce(function(prev, current) {
+      return (prev.id > current.id) ? prev : current})
+      invoice.id = invoiceWithHighestId.id + 1;
+      this.invoices.push(invoice);
+      return of(invoice).pipe(delay(1000));
+  }
   private findIndex = (id: number) => this.invoices.findIndex(x => x.id == id);
 }

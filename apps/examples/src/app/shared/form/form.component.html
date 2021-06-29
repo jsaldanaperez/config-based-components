@@ -1,0 +1,27 @@
+<form #form="ngForm">
+  <div class="row">
+    <div class="col">
+      <h3>{{ title }}</h3>
+    </div>
+    <div class="col">
+      <div *ngIf="!loading" class="float-end btn btn-group">
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="navigateBack()"
+        >
+          Cancel
+        </button>
+        <button
+          class="btn btn-primary"
+          [disabled]="!canSave || saving"
+          (click)="valid && onSave()"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+  <ng-content *ngIf="!loading"></ng-content>
+  <h3 *ngIf="loading">Loading...</h3>
+</form>
