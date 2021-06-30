@@ -3,6 +3,8 @@ import { NgForm } from '@angular/forms';
 import { FormConfig } from './form-config';
 import { NgModel } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormService } from './form.service';
+import { DeepCloneService } from '../deep-clone.service';
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
@@ -13,7 +15,7 @@ export class FormComponent implements OnInit, AfterViewInit, DoCheck {
   @ContentChildren(NgModel) public models: QueryList<NgModel>;
   @Input() config: FormConfig<any>;
   @Input() title: string;
-  value: any;
+  value: unknown;
   valid: boolean;
   dirty: boolean;
   loading: boolean;
@@ -23,6 +25,8 @@ export class FormComponent implements OnInit, AfterViewInit, DoCheck {
 
   constructor(
     private router: Router,
+    private formService: FormService,
+    private deepCloneService: DeepCloneService,
     private activatedRoute: ActivatedRoute){}
 
   ngOnInit(): void{
@@ -31,14 +35,14 @@ export class FormComponent implements OnInit, AfterViewInit, DoCheck {
     if(id){
       this.config.load(id)
       .subscribe((value) => {
-        this.originalValue = JSON.stringify(value);
-        this.value = value;
-        this.config.value(this.value);
+        const copy = this.deepCloneService.clone(value);
+        this.setValue(copy);
         this.loading = false;
     });
     }else{
-      this.value = this.config.newValue();
-      this.config.value(this.value);
+      const value = this.config.newValue();
+      this.setValue(value);
+      this.config.value(this.value)
     }
   }
 
@@ -48,12 +52,13 @@ export class FormComponent implements OnInit, AfterViewInit, DoCheck {
  
   ngDoCheck(){
     if(this.form && this.value){
-      this.dirty = this.originalValue !== JSON.stringify(this.value);
+      this.setIsDirty();
       let customValidation = true;
       if(this.config.validate){
         customValidation = this.config.validate(this.value);
       }
       this.valid = (this.form.valid ?? false) && customValidation;
+      this.formService.save = this.valid ?  () => this.config.update(this.value) : undefined;
     }
     this.canSave = this.valid && this.dirty && !this.loading;
   }
@@ -63,13 +68,25 @@ export class FormComponent implements OnInit, AfterViewInit, DoCheck {
     this.config.update(this.value)
       .subscribe(x => {
         this.saving = false;
-        this.value = x;
-        this.config.value = this.value;
+        this.setValue(x);
+        this.config.value(this.value)
         this.navigateBack();
       });
   }
 
   navigateBack() {
     this.router.navigate(['..'], { relativeTo: this.activatedRoute});
+  }
+
+  private setIsDirty(){
+    this.dirty = this.originalValue !== JSON.stringify(this.value);
+    this.formService.dirty = this.dirty;
+  }
+
+  private setValue(value: unknown){
+    this.originalValue = JSON.stringify(value);
+    this.value = value;
+    this.config.value(value);
+    this.setIsDirty();
   }
 }

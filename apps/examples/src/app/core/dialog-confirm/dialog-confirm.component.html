@@ -1,0 +1,40 @@
+<div
+  *ngIf="show"
+  id="exampleModal"
+  aria-labelledby="exampleModalLabel"
+  class="modal fade show"
+  aria-modal="true"
+  role="dialog"
+  style="display: block"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="exampleModalLabel" class="modal-title">{{ config.title }}</h5>
+        <button
+          _ngcontent-gdo-c16=""
+          type="button"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          class="btn-close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {{ config.message }}
+      </div>
+      <div class="modal-footer btn-group">
+        <button class="btn btn-default" (click)="onCancel()">
+          <span i18n="@@cancel">Cancel</span>
+        </button>
+        <button class="btn btn-danger" (click)="onConfirm()">
+          <span i18n="@@continue-and-lose-changes"
+            >Continue and lose changes</span
+          >
+        </button>
+        <button *ngIf="showSave" class="btn btn-primary" (click)="onSave()">
+          <span i18n="@@save-and-continue">Save and continue</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
