@@ -21,17 +21,19 @@ export class DialogConfirmService {
     
     
     this.showSubject.next({...config,
-      onSave: () => {
-        if(config.onSave){
-          return config.onSave().pipe(finalize(() => this.confirmSubject.next(true)));
-        }
-        return undefined;
-      },
+      onSave: this.onSave(config.onSave),
       onCancel: () => this.confirmSubject.next(false),
       onConfirm: () => this.confirmSubject.next(true)
     });
 
     return this.confirmSubject.asObservable();
+  }
+
+  private onSave(save?: () => Observable<unknown>) : (() => Observable<unknown>) | undefined{
+    if(save){
+      return () => save().pipe(finalize(() => this.confirmSubject.next(true)));
+    }
+    return undefined;
   }
 }
 

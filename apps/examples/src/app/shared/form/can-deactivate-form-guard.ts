@@ -16,7 +16,7 @@ export class CanDeactivateFormGuard implements CanDeactivate<FormComponent>{
             return this.dialogConfirmService.show({
                 title: 'Unsaved changes',
                 message: 'You have unsaved changes. Save them?',
-                onSave: this.formService.save
+                onSave: this.formService.save ?? undefined
             })
         }
         return of(true);

@@ -23,5 +23,5 @@
     </div>
   </div>
   <ng-content *ngIf="!loading"></ng-content>
-  <h3 *ngIf="loading">Loading...</h3>
+  <h3 *ngIf="loading">Loading...{{ loading }}</h3>
 </form>

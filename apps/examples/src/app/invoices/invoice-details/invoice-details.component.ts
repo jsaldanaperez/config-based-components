@@ -9,21 +9,24 @@ import { FormConfig } from '../../shared/form/form-config';
   styleUrls: ['./invoice-details.component.scss']
 })
 export class InvoiceDetailsComponent implements OnInit {
-  invoice: Invoice;
+  invoice = new Invoice;
   config: FormConfig<Invoice>;
   paymentStates = PaymentState;
+  invalidInvoiceNumber: boolean;
 
   constructor(
     private invoiceService: InvoiceService) { }
 
   ngOnInit(): void {
     this.config = FormConfig.create<Invoice>({
-      value: (value) => this.invoice = value,
-      new: () => new Invoice(),
       load: (id: number) => this.invoiceService.getById(id),
       create: (invoice) => this.invoiceService.create(invoice),
       update: (invoice) => this.invoiceService.update(invoice),
-      validate: (invoice) => invoice.invoiceNumber !== "RANDOM"
+      validate: (form) => {
+        if(this.invoice.invoiceNumber == 'RANDOM'){
+          form.controls['invoiceNumber'].setErrors({'incorrect' : true})
+        }
+      }
     });
   }
 }

@@ -18,7 +18,8 @@ export class DialogConfirmComponent implements OnInit {
     this.dialogConfirmService.onShow.subscribe((config) => {
       this.config = config;
       this.show = true;
-      this.showSave = this.config.onSave != null;
+      console.log('this.config.onSave', this.config.onSave == null)
+      this.showSave = this.config.onSave != undefined;
     });
   }
 

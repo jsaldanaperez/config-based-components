@@ -1,34 +1,51 @@
-<app-form [config]="config" title="Invoice details">
-  <ng-container *ngIf="invoice">
-    <div class="mb-3">
-      <label for="invoiceNumber" class="form-label">Invoice Number</label>
+<app-form [config]="config" title="Invoice details" [(value)]="invoice">
+  <div class="mb-3">
+    <label for="invoiceNumber" class="form-label">Invoice Number</label>
+    <div class="input-group">
       <input
         type="text"
         id="invoiceNumber"
         name="invoiceNumber"
         class="form-control"
+        #invoiceNumberControl="ngModel"
         [(ngModel)]="invoice.invoiceNumber"
         [required]="true"
+        autocomplete="off"
+        [minlength]="1"
+        [class.is-invalid]="invoiceNumberControl.errors"
       />
+      <div class="invalid-feedback">
+        <span *ngIf="invoiceNumberControl.errors?.required"
+          >Required field.</span
+        >
+        <span *ngIf="invoiceNumberControl.errors?.incorrect"
+          >Invalid invoice number.</span
+        >
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="amount" class="form-label">Amount</label>
-      <input
-        type="text"
-        id="amount"
-        name="amount"
-        class="form-control"
-        [(ngModel)]="invoice.amount"
-        [required]="true"
-      />
+  </div>
+  <div class="mb-3">
+    <label for="amount" class="form-label">Amount</label>
+    <input
+      type="text"
+      id="amount"
+      name="amount"
+      class="form-control"
+      [(ngModel)]="invoice.amount"
+      #invoiceAmount="ngModel"
+      [required]="true"
+      [class.is-invalid]="invoiceAmount.errors"
+    />
+    <div class="invalid-feedback">
+      <span *ngIf="invoiceAmount.errors?.required">Required field.</span>
     </div>
-    <div class="mb-3">
-      <label for="amount" class="form-label">State</label>
-      <select [(ngModel)]="invoice.paymentState" class="form-select">
-        <option [ngValue]="paymentStates.Pending">Pending</option>
-        <option [ngValue]="paymentStates.Payed">Payed</option>
-        <option [ngValue]="paymentStates.Late">Late</option>
-      </select>
-    </div>
-  </ng-container>
+  </div>
+  <div class="mb-3">
+    <label for="amount" class="form-label">State</label>
+    <select [(ngModel)]="invoice.paymentState" class="form-select">
+      <option [ngValue]="paymentStates.Pending">Pending</option>
+      <option [ngValue]="paymentStates.Payed">Payed</option>
+      <option [ngValue]="paymentStates.Late">Late</option>
+    </select>
+  </div>
 </app-form>
