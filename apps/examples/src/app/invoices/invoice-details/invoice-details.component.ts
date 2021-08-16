@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Invoice, PaymentState } from '../../models/invoice';
 import { InvoiceService } from '../../services/invoice.service';
 import { FormConfig } from '../../shared/form/form-config';
+ 
 
 @Component({
   selector: 'app-invoice-details',
@@ -9,24 +11,31 @@ import { FormConfig } from '../../shared/form/form-config';
   styleUrls: ['./invoice-details.component.scss']
 })
 export class InvoiceDetailsComponent implements OnInit {
-  invoice = new Invoice;
   config: FormConfig<Invoice>;
   paymentStates = PaymentState;
   invalidInvoiceNumber: boolean;
+  invoiceNumber = new FormControl();
 
   constructor(
-    private invoiceService: InvoiceService) { }
+    private invoiceService: InvoiceService) { } 
 
   ngOnInit(): void {
     this.config = FormConfig.create<Invoice>({
+      controls:  {
+        'invoiceNumber': new FormControl('', [Validators.required, Validators.maxLength(7), this.customValidator()]),
+        'amount': new FormControl('', [Validators.max(200)]),
+        'paymentState': new FormControl()
+      },
       load: (id: number) => this.invoiceService.getById(id),
       create: (invoice) => this.invoiceService.create(invoice),
-      update: (invoice) => this.invoiceService.update(invoice),
-      validate: (form) => {
-        if(this.invoice.invoiceNumber == 'RANDOM'){
-          form.controls['invoiceNumber'].setErrors({'incorrect' : true})
-        }
-      }
+      update: (invoice) => this.invoiceService.update(invoice)
     });
+  } 
+
+  customValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const isInvalid = control.value === 'RANDOM';
+      return isInvalid ? { randomErrorId: {value: control.value}} : null;
+    };
   }
 }

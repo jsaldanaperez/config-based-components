@@ -5,7 +5,6 @@ import { InvoicesRoutingModule } from './invoices-routing.module';
 import { InvoiceListComponent } from './invoice-list/invoice-list.component';
 import { TableModule } from '../shared/table/table.module';
 import { PaymentStateLabelComponent } from './payment-state-label/payment-state-label.component';
-import { FormsModule } from '@angular/forms';
 import { InvoiceDetailsComponent } from './invoice-details/invoice-details.component';
 import { FormModule } from '../shared/form/form.module';
 
@@ -20,8 +19,7 @@ import { FormModule } from '../shared/form/form.module';
     CommonModule,
     InvoicesRoutingModule,
     TableModule,
-    FormsModule,
-    FormModule
+    FormModule,
   ]
 })
 export class InvoicesModule { }

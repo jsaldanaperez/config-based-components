@@ -1,66 +1,56 @@
-import { AfterViewInit, Component, ContentChildren, DoCheck, EventEmitter, Input, OnInit, Output, QueryList, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControlDirective, FormGroup, FormGroupDirective } from '@angular/forms';
 import { FormConfig } from './form-config';
-import { NgModel } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormService } from './form.service';
 import { DeepCloneService } from '../deep-clone.service';
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss']
+  styleUrls: ['./form.component.scss'],
+  providers: [FormGroupDirective, FormControlDirective]
 })
-export class FormComponent implements OnInit, AfterViewInit, DoCheck {
-  @ViewChild(NgForm) form: NgForm;
-  @ContentChildren(NgModel, { descendants: true}) public models: QueryList<NgModel>;
+export class FormComponent implements OnInit {
   @Input() config: FormConfig<any>;
   @Input() title: string;
-  @Input() value: any;
-  @Output() valueChange = new EventEmitter<any>()
+  value: any;
   valid: boolean;
   dirty: boolean;
   loading: boolean;
   saving: boolean;
   canSave: boolean;
   originalValue: string;
+  formGroup = new FormGroup({ });
 
   constructor(
+    formGroupDirective: FormGroupDirective,
     private router: Router,
     private formService: FormService,
     private deepCloneService: DeepCloneService,
-    private activatedRoute: ActivatedRoute){}
+    private activatedRoute: ActivatedRoute){
+      formGroupDirective.form = this.formGroup;
+    }
 
   ngOnInit(): void{
     const id = this.activatedRoute.snapshot.paramMap.get('id') as unknown as number;
+
+    Object.keys(this.config.controls).forEach(key => {
+      this.formGroup.addControl(key, this.config.controls[key])
+    })
     if(id){
       this.loading = true;
       this.config.load(id)
       .subscribe((value) => {
         const copy = this.deepCloneService.clone(value);
         this.setValue(copy);
-        this.loading = false;
+        this.loading = false
+        this.formGroup.valueChanges
+          .subscribe(() =>{
+            this.updateState();
+          })
     });
     }
-  }
-
-  ngAfterViewInit(): void{
-    this.models.forEach(model => this.form.addControl(model));
-  }
- 
-  ngDoCheck(){
-    if(this.form && this.value){
-      this.setIsDirty();
-      let customValidation = true;
-      if(this.config.validate){
-        this.config.validate(this.form);
-        customValidation = this.form.valid ?? true;
-      }
-      this.valid = (this.form.valid ?? false) && customValidation;
-      this.formService.save = this.valid ?  () => this.config.update(this.value) : undefined;
-    }
-    this.canSave = this.valid && this.dirty && !this.loading;
-  }
-
+  } 
 
   onSave(){
     this.saving = true;
@@ -76,15 +66,36 @@ export class FormComponent implements OnInit, AfterViewInit, DoCheck {
     this.router.navigate(['..'], { relativeTo: this.activatedRoute});
   }
 
-  private setIsDirty(){
+  private updateState(): void{
+    if(this.formGroup && this.value){
+      this.updateValue();
+      this.setIsDirty(); 
+      this.valid = this.formGroup.valid ?? false
+      this.formService.save = this.valid ?  () => this.config.update(this.formGroup.value) : undefined;
+    }
+    this.canSave = this.valid && this.dirty && !this.loading;
+  }
+
+  private updateValue(): void{
+    const controls = this.config.controls;
+    Object.keys(controls).forEach(key =>{
+      this.value[key] = controls[key].value;
+    })
+  }
+
+  private setIsDirty(): void{
     this.dirty = this.originalValue !== JSON.stringify(this.value);
     this.formService.dirty = this.dirty;
   }
 
-  private setValue(value: unknown){
-    this.originalValue = JSON.stringify(value);
+  private setValue(value: any): void{
     this.value = value;
-    this.valueChange.next(this.value);
+    const controls = this.config.controls;
+    Object.keys(controls).forEach(key => { 
+      controls[key].setValue(this.value[key]);
+    });
+    
+    this.originalValue = JSON.stringify(this.value)
     this.setIsDirty();
   }
 }
