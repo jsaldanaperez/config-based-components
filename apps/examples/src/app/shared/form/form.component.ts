@@ -13,30 +13,26 @@ import { DeepCloneService } from '../deep-clone.service';
 export class FormComponent implements OnInit {
   @Input() config: FormConfig<any>;
   @Input() title: string;
-  value: any;
-  valid: boolean;
   dirty: boolean;
   loading: boolean;
   saving: boolean;
   canSave: boolean;
   originalValue: string;
-  formGroup = new FormGroup({ });
+  formGroup: FormGroup;
 
   constructor(
-    formGroupDirective: FormGroupDirective,
+    private formGroupDirective: FormGroupDirective,
     private router: Router,
     private formService: FormService,
     private deepCloneService: DeepCloneService,
     private activatedRoute: ActivatedRoute){
-      formGroupDirective.form = this.formGroup;
+
     }
 
   ngOnInit(): void{
+    this.formGroup = this.config.formGroup;
+    this.formGroupDirective.form = this.formGroup;
     const id = this.activatedRoute.snapshot.paramMap.get('id') as unknown as number;
-
-    Object.keys(this.config.controls).forEach(key => {
-      this.formGroup.addControl(key, this.config.controls[key])
-    })
     if(id){
       this.loading = true;
       this.config.load(id)
@@ -53,13 +49,15 @@ export class FormComponent implements OnInit {
   } 
 
   onSave(){
-    this.saving = true;
-    this.config.update(this.value)
+    if(this.formGroup.valid){
+          this.saving = true;
+    this.config.update(this.formGroup.value)
       .subscribe(x => {
         this.saving = false;
         this.setValue(x);
         this.navigateBack();
       });
+    }
   }
 
   navigateBack() {
@@ -67,35 +65,22 @@ export class FormComponent implements OnInit {
   }
 
   private updateState(): void{
-    if(this.formGroup && this.value){
-      this.updateValue();
+    if(this.formGroup){
       this.setIsDirty(); 
-      this.valid = this.formGroup.valid ?? false
-      this.formService.save = this.valid ?  () => this.config.update(this.formGroup.value) : undefined;
+      const valid = this.formGroup.valid ?? false
+      this.formService.save = valid ?  () => this.config.update(this.formGroup.value) : undefined;
     }
-    this.canSave = this.valid && this.dirty && !this.loading;
-  }
-
-  private updateValue(): void{
-    const controls = this.config.controls;
-    Object.keys(controls).forEach(key =>{
-      this.value[key] = controls[key].value;
-    })
+    this.canSave = this.formGroup.valid && this.dirty && !this.loading;
   }
 
   private setIsDirty(): void{
-    this.dirty = this.originalValue !== JSON.stringify(this.value);
+    this.dirty = this.originalValue !== JSON.stringify(this.formGroup.value);
     this.formService.dirty = this.dirty;
   }
 
   private setValue(value: any): void{
-    this.value = value;
-    const controls = this.config.controls;
-    Object.keys(controls).forEach(key => { 
-      controls[key].setValue(this.value[key]);
-    });
-    
-    this.originalValue = JSON.stringify(this.value)
+    this.formGroup.patchValue(value);
+    this.originalValue = JSON.stringify(this.formGroup.value)
     this.setIsDirty();
   }
 }

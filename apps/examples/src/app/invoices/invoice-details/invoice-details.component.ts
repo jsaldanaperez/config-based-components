@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Invoice, PaymentState } from '../../models/invoice';
 import { InvoiceService } from '../../services/invoice.service';
 import { FormConfig } from '../../shared/form/form-config';
@@ -21,11 +21,12 @@ export class InvoiceDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.config = FormConfig.create<Invoice>({
-      controls:  {
+      form:  new FormGroup({
+        'id': new FormControl(''),
         'invoiceNumber': new FormControl('', [Validators.required, Validators.maxLength(7), this.customValidator()]),
         'amount': new FormControl('', [Validators.max(200)]),
         'paymentState': new FormControl()
-      },
+      }),
       load: (id: number) => this.invoiceService.getById(id),
       create: (invoice) => this.invoiceService.create(invoice),
       update: (invoice) => this.invoiceService.update(invoice)
