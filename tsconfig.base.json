@@ -14,9 +14,7 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {
-      "@config-based-components/table": ["libs/table/src/index.ts"]
-    },
+    "paths": {},
     "strictPropertyInitialization": false
   },
   "exclude": ["node_modules", "tmp"]
