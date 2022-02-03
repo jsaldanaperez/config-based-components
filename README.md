@@ -1,5 +1,8 @@
 # ConfigBasedComponents
 
+## Try it out
+See working <a href="https://ashy-pebble-0fb055103.1.azurestaticapps.net">demo</a>.
+
 ## Plug & Play
 
 This project is a demo for configuration based table component. Designed with the intention of having plug&play functionality.
